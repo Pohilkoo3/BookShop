@@ -1,0 +1,95 @@
+
+<!--END-->
+<!--END--><!DOCTYPE html><!--[if IE 7]>
+<html class="ie7" lang="ru">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie8" lang="ru">
+<![endif]-->
+<!--[if IE 9]>
+<html class="ie9" lang="ru">
+<![endif]-->
+<!--[if gt IE 9]><!--> <html lang="ru" xmlns:th="http://www.thymeleaf.org"> <!--<![endif]-->
+<head>
+  <title th:text="#{namePage.slugGenres}">Тут название страницы написать</title>
+  <meta name="description" content="Описание страницы">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <!--meta( http-equiv="cache-control" content="no-cache")-->
+  <!--meta( http-equiv="expires" content="0")-->
+  <!--link(rel="preload" href="assets/css/extra.min.css?v=" + version as="style" crossorigin="anonymous")-->
+  <link href="favicon.ico" rel="shortcut icon">
+  <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
+  <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
+  <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
+  <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" crossorigin="anonymous">
+  <link rel="stylesheet" href="/assets/css/fonts.min.css?v=56375974">
+  <link rel="stylesheet" href="/assets/css/basic.min.css?v=56375974">
+  <link rel="stylesheet" href="/assets/css/extra.min.css?v=56375974"><!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script defer src="/assets/js/scripts.min.js?v=56375974"></script>
+  <div th:insert="blocks/header :: scriptChooseLanguage"></div>
+</head>
+<body class="Site">
+  <!--if lt IE 8
+  p.error-browser
+      | Ваш браузер&nbsp;
+      em устарел!&nbsp;
+      a(href="http://browsehappy.com/") Выберите новую версию
+          +s
+          | браузера здесь&nbsp;
+      | для правильного отображения сайта.
+  -->
+  <div th:insert="blocks/header :: header"/>
+  <div class="Middle">
+    <div class="wrap">
+      <main class="Middle-main">
+        <ul class="breadcrumbs">
+          <li class="breadcrumbs-item"><a th:href="@{/}">Главная</a>
+          </li>
+          <li class="breadcrumbs-item"><a th:href="@{/genres}">Жанры</a>
+          </li>
+          <li class="breadcrumbs-item" th:each="item : ${path}">
+            <a th:href="@{'/genres/slug/' + ${item.getId()}}" th:text="${item.getName()}">Легкое чтение</a>
+          </li>
+
+        </ul>
+        <header class="Middle-header">
+          <h1 class="Middle-title" th:text="${genreName.getName()}">Детективы
+          </h1>
+        </header>
+        <div class="Section">
+          <div class="Cards Cards_refresh">
+            <div class="Card" th:each="book : ${booksDataByGenreId}">
+              <div class="Card-picture"><a th:href="@{'/books/' + ${book.slug}}"><img src="/assets/img/content/main/card.jpg" alt="card.jpg"/></a>
+                <div class="Card-ribbon" th:style= "${book.isBestseller == 0} ? 'display: none'"><span class="Card-ribbonText">Бестселлер</span>
+                </div>
+              </div>
+              <div class="Card-content">
+                <strong class="Card-title"><a th:href="@{'/books/' + ${book.slug}}" th:text="${book.title}">Техника</a>
+                </strong>
+
+                  <div class="Card-description" th:each="pk, stats : ${book.book2AuthorEntitySet}">
+                      <div th:text="${pk.author.name}"></div>
+                  </div>
+
+                <div th:if="${book.discount}">
+                  <div class="Card-cost"><span class="Card-priceOld" th:text="'₽'+ ${book.price}">₽300.00</span>
+                    <span class="Card-price" th:text="'₽' + (${book.price}-${book.price}*${book.discount}/100)" >₽190.00</span>
+                  </div>
+                </div>
+                <div th:unless="${book.discount}" class="Card-cost">
+                  <span class="Card-price" th:text="'₽' + ${book.price}" >₽190.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="Cards-footer Cards-footer_center"><a class="btn btn_primary" data-refreshshow="genre" data-refreshoffset="1" data-refreshlimit="10" data-refreshid="1020" th:attr="data-refreshid=${#strings.toString(genreName.getId())}" th:text="#{message.loadMore}">Показать еще</a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div th:insert="blocks/footer :: footer"></div>
+  <script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+</body></html>

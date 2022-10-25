@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>404 Mistake</h1>
+<div th:if="isCustomAnnotationException">
+    <div th:text="${customAnnotationException.getCustomMessage()}"></div>
+    <div th:text="${customAnnotationException.getFormatTime()}"></div>
+    <div th:text="'The Method gave mistake is => ' + ${customAnnotationException.getNameMethodInvoked()}"></div>
+</div>
+<h2><a href="/">Вернуться на главную страницу</a></h2>
+</body>
+</html>
