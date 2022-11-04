@@ -52,7 +52,7 @@ public class UserEntity implements Serializable {
     @JsonIgnore
     private Set<FileDownloadEntity> fileDownloadEntitySet = new HashSet<>(0);
 
-    @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<BalanceTransactionEntity> balanceTransactionEntities = new HashSet<>(0);
 

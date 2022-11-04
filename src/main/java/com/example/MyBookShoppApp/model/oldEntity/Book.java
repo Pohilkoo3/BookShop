@@ -113,9 +113,9 @@ public class Book implements Serializable {
     @JsonIgnore
     private Set<FileDownloadEntity> fileDownloadEntitySet = new HashSet<>(0);
 
-    @OneToMany(mappedBy = "pk.book")
-    @JsonIgnore
-    private Set<BalanceTransactionEntity> balanceTransactionEntities = new HashSet<>(0);
+//    @OneToMany(mappedBy = "pk.book")
+//    @JsonIgnore
+//    private Set<BalanceTransactionEntity> balanceTransactionEntities = new HashSet<>(0);
 
     @OneToMany(mappedBy = "pk.book", cascade = CascadeType.ALL)
     @JsonIgnore

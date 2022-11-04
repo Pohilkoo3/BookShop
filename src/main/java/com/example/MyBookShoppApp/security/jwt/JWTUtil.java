@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,5 +65,35 @@ public class JWTUtil
     public Boolean validateToken(String token, String contact){
         String username = extractUsername(token);
         return (username.equals(contact) && !isTokenExpired(token));
+    }
+
+    public String getEmailFromToken(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        String token = "";
+        String email = "";
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("token")) {
+                    token = cookie.getValue();
+                    email = extractUsername(token);
+
+                }
+            }
+        }
+        return email;
+    }
+
+    public String getTokenFromRequest(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String token = "";
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("token")) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+        return token;
+
     }
 }

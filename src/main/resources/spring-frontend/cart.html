@@ -134,8 +134,12 @@
               <strong class="Cart-title" th:text="#{cart.total}">Итого:
               </strong><span class="Cart-price" th:text="${sumAllBooks} + ' р.'">534 р.</span><span class="Cart-price_old" th:text="${sumOldPrice} + ' р.'">658 р.</span>
             </div>
-            <div class="Cart-block"><a class="btn btn_success btn_md" href="/order.html" th:text="#{postponed.buy}">Купить</a>
+            <div class="Cart-block"><a class="btn btn_success btn_md" href="/order.html" th:href="@{/books/pay}" th:text="#{postponed.buy}">Купить</a>
             </div>
+            <br>
+            <br>
+            <br>
+            <div th:text="${isMoneyEnough} ? '' : 'На счету недостаточно денег для осуществления покупки. Пополните счет.'"></div>
           </div>
         </form>
       </main>

@@ -1,9 +1,6 @@
 package com.example.MyBookShoppApp.model.payments;
 
-import com.example.MyBookShoppApp.keys.BookUserId;
-import com.example.MyBookShoppApp.model.oldEntity.Book;
 import com.example.MyBookShoppApp.model.user.UserEntity;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,17 +8,19 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "balance_transaction")
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
 public class BalanceTransactionEntity implements Serializable {
 
-    @EmbeddedId
-    private BookUserId pk;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(columnDefinition = "date NOT NULL")
     private LocalDateTime time;
@@ -31,21 +30,14 @@ public class BalanceTransactionEntity implements Serializable {
 
      @Column(columnDefinition = "TEXT NOT NULL")
     private String description;
-    public Book getBook() {
-        return getPk().getBook();
-    }
 
-    public UserEntity getUserEntity() {
-        return getPk().getUser();
-    }
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
-    public void setBook(Book book){
-        getPk().setBook(book);
-    }
 
-    public void setUser(UserEntity user){
-        getPk().setUser(user);
-    }
+    @OneToMany(mappedBy = "pk.balanceTransaction", cascade = CascadeType.ALL)
+    private Set<Book2BalanceTransaction> setBalanceTransaction = new HashSet<>(0);
 
 
 }

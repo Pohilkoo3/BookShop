@@ -11,6 +11,8 @@ import java.util.Arrays;
 @ControllerAdvice
 public class ControllerAdviceCommonsModel {
 
+    private boolean isMoneyEnough =true;
+
     @ModelAttribute("cartSize")
     public Integer cartSize(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
@@ -33,7 +35,14 @@ public class ControllerAdviceCommonsModel {
         }
     }
 
+    @ModelAttribute("isMoneyEnough")
+    public Boolean isMoneyEnough() {
+        return isMoneyEnough;
+    }
 
+    public void setIsMoneyEnough(boolean isEnough){
+        isMoneyEnough = isEnough;
+    }
 
 
 }

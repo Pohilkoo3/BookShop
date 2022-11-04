@@ -3,42 +3,38 @@ package com.example.MyBookShoppApp.controllers;
 import com.example.MyBookShoppApp.model.other.SmsCode;
 import com.example.MyBookShoppApp.model.user.UserContactEntity;
 import com.example.MyBookShoppApp.model.user.UserEntity;
-import com.example.MyBookShoppApp.security.BookstoreUserRegister;
-import com.example.MyBookShoppApp.security.ContactConfirmationPayload;
-import com.example.MyBookShoppApp.security.ContactConfirmationResponse;
-import com.example.MyBookShoppApp.security.RegistrationForm;
+import com.example.MyBookShoppApp.security.*;
+import com.example.MyBookShoppApp.security.jwt.JWTUtil;
+import com.example.MyBookShoppApp.services.PaymentService;
 import com.example.MyBookShoppApp.services.SmsService;
 import com.example.MyBookShoppApp.services.UserContactService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.MyBookShoppApp.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 
 @Controller
+@RequiredArgsConstructor
 public class AuthUserController {
 
     private final BookstoreUserRegister userRegister;
     private final UserContactService userContactService;
-
-    private SmsService smsService;
-    private JavaMailSender javaMailSender;
-
-    @Autowired
-    public AuthUserController(BookstoreUserRegister userRegister, UserContactService userContactService, SmsService smsService, JavaMailSender javaMailSender) {
-        this.userRegister = userRegister;
-        this.userContactService = userContactService;
-        this.smsService = smsService;
-        this.javaMailSender = javaMailSender;
-    }
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final SmsService smsService;
+    private final JavaMailSender javaMailSender;
+    private final PaymentService paymentService;
+    private final JWTUtil jwtUtil;
+    private final UserContactService contactService;
 
     @GetMapping("/signin")
     public String signinPage() {
@@ -112,7 +108,70 @@ public class AuthUserController {
         UserContactEntity userContact = userContactService.getContactById(user.getId());
         model.addAttribute("curUsr", user);
         model.addAttribute("usrContact", userContact);
+        model.addAttribute("changePas", 0);
+        model.addAttribute("transactions", paymentService.getAllTransactionsByUserId(user.getId()));
         return "profile";
+    }
+
+
+    @PostMapping(value = "/profile")
+    public String handleProfileChangeCredentials(Model model, HttpServletRequest request,
+                                                 ChangePasswordForm passwordForm) {
+        String email = jwtUtil.getEmailFromToken(request);
+        String token = jwtUtil.getTokenFromRequest(request);
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("bookstore-oleg@mail.ru");
+        message.setTo(email);
+        message.setSubject("Bookstore email verification");
+        String url = "http://localhost:8085/profile/change-credentials" +
+                "?token=" + token +
+                "&emailOld=" + email +
+                "&emailNew=" + passwordForm.getMail() +
+                "&name=" + passwordForm.getName() +
+                "&password=" + passwordForm.getPassword() +
+                "&phone=" + passwordForm.getPhone() +
+                "&passwordReply=" + passwordForm.getPasswordReply();
+
+        message.setText("Для подтверждения изменения учетных данных перейдите по ссылке: " + url);
+        javaMailSender.send(message);
+        return "redirect:/logout";
+    }
+
+
+    @GetMapping(value = "/profile/change-credentials")
+    public String handleProfileChangePassword(@RequestParam("token") String token,
+                                              @RequestParam("emailOld") String emailOld,
+                                              @RequestParam("emailNew") String emailNew,
+                                              @RequestParam("name") String name,
+                                              @RequestParam("password") String password,
+                                              @RequestParam("phone") String phone,
+                                              @RequestParam("passwordReply") String passwordReply,
+                                              Model model, HttpServletRequest request) {
+        UserEntity user = userService.findUserByContact(emailOld);
+        UserContactEntity userContact = userContactService.getContactById(user.getId());
+        if (!password.isBlank() & password.equals(passwordReply)) {
+            user.setPass(passwordEncoder.encode(password));
+            user.setName(name.isBlank() ? user.getName() : name);
+            userService.addNewUser(user);
+
+            userContact.setContact(emailNew.isBlank() ? emailOld : emailNew);
+            userContact.setApproved(1);
+            userContact.setUser(user);
+            userContact.setCode("111111");
+            userContact.setCodeTrails(3);
+            userContact.setCodeTime(LocalDateTime.now());
+
+            contactService.addNewContact(userContact);
+            model.addAttribute("changePas", 1);
+        } else {
+            model.addAttribute("changePas", 2);
+        }
+        model.addAttribute("curUsr", user);
+        model.addAttribute("usrContact", userContact);
+        model.addAttribute("transactions", paymentService.getAllTransactionsByUserId(user.getId()));
+        return "/signin";
     }
 
 

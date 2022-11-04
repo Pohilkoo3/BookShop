@@ -5,6 +5,7 @@ import com.example.MyBookShoppApp.model.user.UserContactEntity;
 import com.example.MyBookShoppApp.model.user.UserEntity;
 import com.example.MyBookShoppApp.services.UserContactService;
 import com.example.MyBookShoppApp.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,25 +18,16 @@ import java.awt.print.Book;
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class BookstoreUserRegister {
     private final UserService userService;
     private final UserContactService contactService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private BookstoreUserDetailsService bookstoreUserDetailsService;
+    private  final BookstoreUserDetailsService bookstoreUserDetailsService;
 
-    private JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
 
-    @Autowired
-    public BookstoreUserRegister(UserService userService, UserContactService contactService,
-                                 PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, BookstoreUserDetailsService bookstoreUserDetailsService, JWTUtil jwtUtil) {
-        this.userService = userService;
-        this.contactService = contactService;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-        this.bookstoreUserDetailsService = bookstoreUserDetailsService;
-        this.jwtUtil = jwtUtil;
-    }
 
     public UserEntity registerNewUser(RegistrationForm registrationForm) {
         UserEntity user = new UserEntity();

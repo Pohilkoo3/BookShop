@@ -59,7 +59,7 @@ public class BookShopPostponedController {
             if (!postponedContents.equals("")){
                 String[] arraySlugs = postponedContents.split("/");
                 List<Book> books = bookService.getBooksByListSlug(arraySlugs);
-                int sumAllBooks = books.stream().map(b -> b.getPriceWithDiscount()).reduce((s1, s2) ->s1 + s2).orElse(0);
+                int sumAllBooks = books.stream().map(Book::getPriceWithDiscount).reduce(Integer::sum).orElse(0);
                 String stringSlugs = postponedContents.replaceAll("/", ",");
                 model.addAttribute("booksData", books);
                 model.addAttribute("sumAllBooks", sumAllBooks);
@@ -98,7 +98,8 @@ public class BookShopPostponedController {
     }
 
     @PostMapping("/changeBookStatus/postponed/remove/{slug}")
-    public String handleByAll(@PathVariable("slug") String slug, Model model, @CookieValue(name = "postponedContents", required = false) String postponedContents
+    public String handleByAll(@PathVariable("slug") String slug,
+                              @CookieValue(name = "postponedContents", required = false) String postponedContents
             , HttpServletResponse response) {
         if (postponedContents != null || !postponedContents.equals("")) {
             List<String> bookSlugs = new ArrayList<>(Arrays.stream(postponedContents.split("/")).toList());
