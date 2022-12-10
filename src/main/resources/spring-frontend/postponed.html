@@ -1,0 +1,164 @@
+<!--END-->
+<!--END--><!DOCTYPE html><!--[if IE 7]>
+<html class="ie7" lang="ru">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie8" lang="ru">
+<![endif]-->
+<!--[if IE 9]>
+<html class="ie9" lang="ru">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"> <!--<![endif]-->
+<head>
+    <title th:text="#{namePage.postponed}">Тут название страницы написать</title>
+    <meta name="description" content="Описание страницы">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <!--meta( http-equiv="cache-control" content="no-cache")-->
+    <!--meta( http-equiv="expires" content="0")-->
+    <!--link(rel="preload" href="assets/css/extra.min.css?v=" + version as="style" crossorigin="anonymous")-->
+    <link href="favicon.ico" rel="shortcut icon">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/fonts.min.css?v=04238027">
+    <link rel="stylesheet" href="/assets/css/basic.min.css?v=04238027">
+    <link rel="stylesheet" href="/assets/css/extra.min.css?v=04238027">
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <script defer src="/assets/js/scripts.min.js?v=04238027"></script>
+    <div th:insert="blocks/header :: scriptChooseLanguage"></div>
+</head>
+<body class="Site">
+<header class="Header" th:replace="~{blocks/header :: header}">
+</header>
+<div class="Middle">
+    <div class="wrap">
+        <main class="Middle-main">
+            <h1 class="Middle-title" th:text="#{topbar.postponed}">Отложенное
+            </h1>
+            <h3 th:if="${booksData.size() == 0}">Отложенных книг нет совсем 😎😱 </h3>
+            <form class="form Cart Cart_postponed" action="#" method="post">
+
+                <div class="Cart-product" th:each="book : ${booksData}">
+                    <div class="Cart-block Cart-block_row">
+                        <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="#"><img class="Cart-img"
+                                                                                                  th:src="${book.image}"
+                                                                                                   src="/assets/img/content/main/card.jpg"
+                                                                                                   alt="card.jpg"/></a>
+                        </div>
+                        <div class="Cart-block Cart-block_row">
+                            <div class="Cart-block Cart-block_info">
+                                <div class="Cart-author"><a href="#" th:text="${book.setAllAuthors()}">Борис Васильевич
+                                    Маяковский</a>
+                                </div>
+                                <div class="Cart-title"><a href="#" th:text="${book.title}">Трубы</a>
+                                </div>
+                                <div class="Cart-rating"><span class="Rating"><span class="Rating-stars"><span
+                                        class="Rating-star Rating-star_view">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
+                            <g>
+                              <g>
+                                <path fill="#ffc000"
+                                      d="M9.5 14.925L3.629 18l1.121-6.512L0 6.875l6.564-.95L9.5 0l2.936 5.925 6.564.95-4.75 4.613L15.371 18z"></path>
+                              </g>
+                            </g>
+                          </svg></span><span class="Rating-star Rating-star_view">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
+                            <g>
+                              <g>
+                                <path fill="#ffc000"
+                                      d="M9.5 14.925L3.629 18l1.121-6.512L0 6.875l6.564-.95L9.5 0l2.936 5.925 6.564.95-4.75 4.613L15.371 18z"></path>
+                              </g>
+                            </g>
+                          </svg></span><span class="Rating-star Rating-star_view">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
+                            <g>
+                              <g>
+                                <path fill="#ffc000"
+                                      d="M9.5 14.925L3.629 18l1.121-6.512L0 6.875l6.564-.95L9.5 0l2.936 5.925 6.564.95-4.75 4.613L15.371 18z"></path>
+                              </g>
+                            </g>
+                          </svg></span><span class="Rating-star Rating-star_view">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
+                            <g>
+                              <g>
+                                <path fill="#ffc000"
+                                      d="M9.5 14.925L3.629 18l1.121-6.512L0 6.875l6.564-.95L9.5 0l2.936 5.925 6.564.95-4.75 4.613L15.371 18z"></path>
+                              </g>
+                            </g>
+                          </svg></span><span class="Rating-star Rating-star_view">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18">
+                            <g>
+                              <g>
+                                <path fill="#ffc000"
+                                      d="M9.5 14.925L3.629 18l1.121-6.512L0 6.875l6.564-.95L9.5 0l2.936 5.925 6.564.95-4.75 4.613L15.371 18z"></path>
+                              </g>
+                            </g>
+                          </svg></span></span></span>
+                                </div>
+                                <div class="Cart-buttons">
+                                    <div class="Cart-btn">
+                                        <button class="btn btn_primary btn_outline" data-sendstatus="CART"
+                                                data-bookid="[1133]" th:attr="data-bookid=${book.slug}"><span class="btn-icon"><img
+                                                src="/assets/img/icons/shopping-basket.svg" alt="shopping-basket.svg"/></span><span
+                                                class="btn-content" th:text="#{postponed.buy}">Купить</span>
+                                        </button>
+                                    </div>
+                                    <div class="Cart-btn">
+                                        <button class="btn btn_danger btn_outline" data-sendstatus="UNLINK"
+                                                data-bookid="[1133]" th:attr="data-bookid='postponed/remove/' + ${book.slug}"><span class="btn-icon"><img
+                                                src="/assets/img/icons/trash.svg" alt="trash.svg"/></span><span
+                                                class="btn-content" th:text="#{postponed.delete}">Удалить</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Cart-block Cart-block_price">
+                                <div class="Cart-priceTitle" th:text="#{postponed.price} + ':'">Цена:
+                                </div>
+                                <div class="Cart-price Cart-price_old"
+                                     th:if="${book.discount !=0}">
+                                    <p th:text="${book.price}"></p>
+                                    <div class="Cart-sale" th:text="'-' + ${book.discount} + '%'">-30%
+                                    </div>
+                                </div>
+                                <div class="Cart-price" th:text="${book.getPriceWithDiscount()}">100 р.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="Cart-total">
+                    <div class="Cart-block Cart-block_total">
+                        <strong class="Cart-title" th:text="#{cart.total}">Итого:
+                        </strong><span class="Cart-price" th:text="${sumAllBooks} + ' руб.'">534 р.</span>
+                    </div>
+                    <div class="Cart-block">
+                        <button class="btn btn_success btn_md Cart-buyAll" data-sendstatus="CART"
+                                data-bookid="[1111, 1122, 1133]" th:attr="data-bookid='postponed/byAll/' + ${allSlugs}" th:text="#{postponed.buy.all}">Купить все
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+<footer class="Footer" th:replace="~{blocks/footer :: footer}">
+</footer>
+<script src="/assets/plg/jQuery/jquery-3.5.1.min.js"></script>
+<!--+menu(-->
+<!--    'Это раз',-->
+<!--    'Это два',-->
+<!--    'Это три'-->
+<!--)-->
+<!--br-->
+<!--br-->
+<!--+menu._vt-->
+<!--    +menuItem Это раз-->
+<!--    +menuItem.-item_danger Это два-->
+<!--    +menuItem Это три-->
+</body>
+</html>

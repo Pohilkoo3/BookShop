@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="Card-content" th:fragment="insertBooks">
+    <strong class="Card-title"><a th:href="@{'/books/' + ${book.slug}}" th:text="${book.title}">Техника</a>
+    </strong>
+    <div class="Card-description" >Кондратенко Валерий Петрович
+    </div>
+    <div class="Card-cost"><span class="Card-priceOld" th:text="${book.price}">₽300.00</span><span class="Card-price" th:text="${book.discount}">₽190.00</span>
+    </div>
+</div>
+</body>
+</html>
